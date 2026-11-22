@@ -1,0 +1,15 @@
+{
+  "name": "Re-Imagining Manipur — Imphal Travel Guide",
+  "short_name": "Manipur Guide",
+  "description": "A working travel guide to Imphal and Manipur — places, planner, hotels, and taxi contacts.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#1e4a3c",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

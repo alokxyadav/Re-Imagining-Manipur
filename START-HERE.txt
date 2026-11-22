@@ -1,0 +1,36 @@
+RE-IMAGINING MANIPUR: COMPLETE PACKAGE
+
+Two folders:
+  site-upload/     Ready to upload. Only the site files.
+  github-project/  The full project: source, tests, deploy workflow, README.
+
+FASTEST WAY LIVE (about 2 minutes)
+  1. Go to app.netlify.com/drop
+  2. Drag the site-upload folder onto the page.
+  3. Sign in (free) when asked so the site is kept. Open the link it gives you.
+  Any static host works the same way (upload the contents of site-upload).
+
+GITHUB PAGES (updates on every push, runs the tests first)
+  1. Create an empty repository on GitHub.
+  2. In the github-project folder run:
+       git init
+       git add .
+       git commit -m "Initial commit"
+       git branch -M main
+       git remote add origin https://github.com/YOUR-USERNAME/YOUR-REPO.git
+       git push -u origin main
+  3. Repo Settings > Pages > Source: GitHub Actions.
+  4. Wait a minute or two. The site appears at https://YOUR-USERNAME.github.io/YOUR-REPO/
+
+BEFORE YOU LAUNCH
+  - Replace [contact email] in privacy.html and terms.html with a real address.
+  - Real emailed sign-in codes need a free Supabase project (steps in
+    github-project/README.md, section "Email verification"). Then set allowDemo
+    to false in index.html so the on-screen demo code can never appear.
+  - admin.html is a demo screen. Its passcode (manipur2026) is visible in the
+    page source. It is not real access control.
+  - Sign-in, reviews, trips and admin data are stored per browser only.
+
+RUN LOCALLY
+  cd site-upload
+  python3 -m http.server 8000     then open http://localhost:8000

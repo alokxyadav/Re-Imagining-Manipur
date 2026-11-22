@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+
+Sitemap: https://your-username.github.io/re-imagining-manipur/sitemap.xml

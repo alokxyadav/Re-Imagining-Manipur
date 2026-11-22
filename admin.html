@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin | Re-Imagining Manipur</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%236d2330'/%3E%3Cpath d='M12 20a8 8 0 1116 0 8 8 0 01-16 0z' stroke='%23f6f0e2' stroke-width='2.4' fill='none'/%3E%3Ccircle cx='20' cy='20' r='2.6' fill='%23f6f0e2'/%3E%3C/svg%3E">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self';">
+<meta name="theme-color" content="#6d2330">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1a1712; --ink-soft:#5b5344; --paper:#f7f3ea; --paper-raised:#faf7f0; --paper-sunk:#f2ece0;
+  --line:rgba(26,23,18,0.11); --forest:#1e4a3c; --forest-deep:#0f2a22; --gold:#b3822a; --gold-soft:#f6e9c8;
+  --maroon:#6d2330; --shadow:0 10px 28px rgba(20,18,10,0.08); --radius-m:14px;
+}
+*{box-sizing:border-box;}
+body{margin:0; background:var(--paper); color:var(--ink); font-family:'Manrope',sans-serif; -webkit-font-smoothing:antialiased;}
+h1,h2,h3{font-family:'Fraunces',serif; font-weight:500; margin:0;}
+.wrap{max-width:1040px; margin:0 auto; padding:0 24px;}
+button{font:inherit; cursor:pointer;}
+input,textarea,select{font:inherit;}
+
+/* GATE */
+.gate{min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px;}
+.gate-card{max-width:380px; width:100%; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:32px; text-align:center;}
+.gate-card h1{font-size:1.5rem; margin-bottom:8px;}
+.gate-card p{color:var(--ink-soft); font-size:0.9rem; margin-bottom:20px;}
+.gate-card input{width:100%; border:1px solid var(--line); border-radius:8px; padding:12px 14px; margin-bottom:12px; background:var(--paper);}
+.gate-card button{width:100%; background:var(--forest); color:#fff; border:none; border-radius:9px; padding:12px 0; font-weight:700;}
+.gate-hint{background:var(--gold-soft); color:#5c4413; border-radius:8px; padding:10px 12px; font-size:0.78rem; margin-top:16px; text-align:left;}
+.gate-err{color:var(--maroon); font-size:0.82rem; min-height:18px; margin-top:-4px; margin-bottom:8px;}
+
+/* ADMIN SHELL */
+.admin{display:none;}
+.admin.show{display:block;}
+.topbar{border-bottom:1px solid var(--line); padding:18px 0; background:var(--paper-raised);}
+.topbar .wrap{display:flex; justify-content:space-between; align-items:center;}
+.topbar h1{font-size:1.2rem;}
+.topbar span{font-size:0.78rem; color:var(--ink-soft);}
+.logout{background:none; border:1px solid var(--line); border-radius:8px; padding:8px 14px; font-weight:700; font-size:0.82rem;}
+.banner{background:var(--forest-deep); color:#e9e3d3; font-size:0.8rem; padding:9px 0; text-align:center;}
+
+.stats-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden; margin:28px 0;}
+@media(max-width:700px){.stats-row{grid-template-columns:repeat(2,1fr);}}
+.stat-cell{background:var(--paper-raised); padding:20px;}
+.stat-cell b{display:block; font-family:'Fraunces',serif; font-size:1.9rem; font-weight:600;}
+.stat-cell span{font-size:0.76rem; color:var(--ink-soft);}
+
+.tabs{display:flex; gap:8px; margin-bottom:22px; flex-wrap:wrap;}
+.tab-btn{border:1px solid var(--line); background:var(--paper-raised); padding:9px 16px; border-radius:999px; font-weight:700; font-size:0.85rem; color:var(--ink-soft);}
+.tab-btn.active{background:var(--forest); color:#fff; border-color:var(--forest);}
+.panel{display:none; padding-bottom:60px;}
+.panel.active{display:block;}
+
+table.data{width:100%; border-collapse:collapse; background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden; font-size:0.88rem; margin-bottom:22px;}
+table.data th{text-align:left; padding:12px 14px; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-soft); border-bottom:1px solid var(--line); background:var(--paper-sunk);}
+table.data td{padding:12px 14px; border-bottom:1px solid var(--line); vertical-align:top;}
+table.data tr:last-child td{border-bottom:none;}
+.del-btn{background:none; border:1px solid var(--line); color:var(--maroon); border-radius:7px; padding:6px 11px; font-size:0.78rem; font-weight:700;}
+.badge{background:var(--gold-soft); color:#5c4413; padding:3px 9px; border-radius:999px; font-size:0.7rem; font-weight:800;}
+.empty{padding:40px; text-align:center; color:var(--ink-soft); background:var(--paper-raised); border:1px dashed var(--line); border-radius:var(--radius-m);}
+
+.form-card{background:var(--paper-raised); border:1px solid var(--line); border-radius:var(--radius-m); padding:22px; max-width:520px;}
+.form-card h3{font-size:1.1rem; margin-bottom:16px;}
+.form-row{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:12px;}
+.form-card label{font-size:0.75rem; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-soft); display:block; margin-bottom:5px;}
+.form-card input, .form-card textarea{width:100%; border:1px solid var(--line); border-radius:8px; padding:10px 12px; background:var(--paper); margin-bottom:12px;}
+.form-card button{background:var(--forest); color:#fff; border:none; border-radius:9px; padding:11px 20px; font-weight:700;}
+.note{font-size:0.78rem; color:var(--ink-soft); margin-top:6px;}
+.stars-sm{color:var(--gold);}
+</style>
+</head>
+<body>
+
+<!-- ================= GATE ================= -->
+<div class="gate" id="gate">
+  <div class="gate-card">
+    <h1>Admin panel</h1>
+    <p>Manage hotel listings and moderate traveller reviews for the Re-Imagining Manipur guide.</p>
+    <input type="password" id="gatePass" placeholder="Admin passcode" autocomplete="new-password">
+    <p class="gate-err" id="gateErr"></p>
+    <button id="gateBtn">Enter</button>
+    <div class="gate-hint">Demo passcode: <b>manipur2026</b>, this is a front-end-only gate for the hackathon prototype, not real authentication. Anyone who reads the source can see it; don’t put anything sensitive behind it.</div>
+  </div>
+</div>
+
+<!-- ================= ADMIN SHELL ================= -->
+<div class="admin" id="adminShell">
+  <div class="banner">Prototype admin panel, all data lives in this browser’s local storage only, shared with the public guide when hosted on the same domain.</div>
+  <div class="topbar">
+    <div class="wrap">
+      <div><h1>Re-Imagining Manipur, Admin</h1><span>Hotels, reviews &amp; site stats</span></div>
+      <button class="logout" id="logoutBtn">Exit admin</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="stats-row" id="statsRow"></div>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-panel="hotels">Hotels</button>
+      <button class="tab-btn" data-panel="reviews">Reviews</button>
+      <button class="tab-btn" data-panel="users">Registered users</button>
+    </div>
+
+    <div class="panel active" id="panel-hotels">
+      <table class="data" id="hotelsTable"></table>
+      <div class="form-card">
+        <h3>Add a hotel</h3>
+        <div class="form-row">
+          <div><label>Name</label><input type="text" id="hName" placeholder="e.g. Hotel Nirmala Palace"></div>
+          <div><label>Tier</label><input type="text" id="hTier" placeholder="e.g. 3-star"></div>
+        </div>
+        <div class="form-row">
+          <div><label>Area</label><input type="text" id="hArea" placeholder="e.g. Thangal Bazar, Imphal"></div>
+          <div><label>Phone (10 digits)</label><input type="text" id="hPhone" placeholder="9851234567"></div>
+        </div>
+        <label>Note</label>
+        <textarea id="hNote" rows="2" placeholder="One line on what makes it a fit"></textarea>
+        <button id="hAddBtn">Add hotel</button>
+        <p class="note">Added hotels are stored locally and merged with the five verified default listings, they won’t appear on other visitors’ devices unless this page and the public guide share the same deployed domain and browser.</p>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-reviews">
+      <table class="data" id="reviewsTable"></table>
+      <p class="note">Notes are stored in this browser only.</p>
+    </div>
+
+    <div class="panel" id="panel-users">
+      <table class="data" id="usersTable"></table>
+      <p class="note">Demo accounts created via the guide’s email sign-in. Emails that completed code verification on this device. In demo mode (no email service connected) verification is not secure.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+const PASSCODE = 'manipur2026';
+
+function $(id){ return document.getElementById(id); }
+
+function escapeHtml(str){
+  return String(str==null ? '' : str).replace(/[&<>"']/g, m => (
+    {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]
+  ));
+}
+
+function loadJSON(key, fallback){
+  try{ const raw = localStorage.getItem(key); return raw ? JSON.parse(raw) : fallback; }
+  catch(e){ return fallback; }
+}
+function saveJSON(key, val){
+  try{ localStorage.setItem(key, JSON.stringify(val)); }catch(e){}
+}
+
+const DEFAULT_HOTELS = [
+  {name:'Hotel Classic Grande', tier:'4-star', area:'Chingmeirong, Imphal', phone:'3852421663', note:'Imphal\u2019s top-tier business hotel.', builtin:true},
+  {name:'The Classic Hotel', tier:'3-star', area:'North AOC, Imphal', phone:'3852443969', note:'Comfortable mid-range stay.', builtin:true},
+  {name:'Hotel Imphal', tier:'3-star', area:'North AOC, Imphal', phone:'3852421373', note:'Long-running city hotel.', builtin:true},
+  {name:'Hotel Lanchenba', tier:'Standard', area:'Sangakpham, Imphal', phone:'3852422227', note:'Small and budget-friendly.', builtin:true},
+  {name:'Youth Hostel Imphal', tier:'Economy', area:'Khuman Lampak, Imphal', phone:'3852421618', note:'Government-run economy stay.', builtin:true}
+];
+const SEED_REVIEW_COUNT = 0;
+
+function gateEnter(){
+  const val = $('gatePass').value;
+  if(val === PASSCODE){
+    $('gate').style.display = 'none';
+    $('adminShell').classList.add('show');
+    renderAll();
+  } else {
+    $('gateErr').textContent = 'Incorrect passcode.';
+  }
+}
+$('gateBtn').addEventListener('click', gateEnter);
+$('gatePass').addEventListener('keydown', e=>{ if(e.key==='Enter') gateEnter(); });
+$('logoutBtn').addEventListener('click', ()=>{
+  $('adminShell').classList.remove('show');
+  $('gate').style.display = 'flex';
+  $('gatePass').value = '';
+});
+
+document.querySelectorAll('.tab-btn').forEach(b=>{
+  b.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    $('panel-'+b.dataset.panel).classList.add('active');
+  });
+});
+
+function renderAll(){
+  renderStats();
+  renderHotels();
+  renderReviews();
+  renderUsers();
+}
+
+function renderStats(){
+  const extraHotels = loadJSON('rim_admin_hotels', []);
+  const reviews = loadJSON('rim_reviews', []);
+  const users = loadJSON('rim_users', {});
+  const trip = loadJSON('rim_trip', []);
+  $('statsRow').innerHTML = `
+    <div class="stat-cell"><b>${DEFAULT_HOTELS.length + extraHotels.length}</b><span>Hotels listed</span></div>
+    <div class="stat-cell"><b>${SEED_REVIEW_COUNT + reviews.length}</b><span>Traveller notes</span></div>
+    <div class="stat-cell"><b>${Object.keys(users).length}</b><span>Registered accounts</span></div>
+    <div class="stat-cell"><b>${trip.length}</b><span>Places in this browser\u2019s trip</span></div>
+    <div class=\"stat-cell\"><b>${loadJSON('rim_errlog', []).length}</b><span>Script errors logged here</span></div>`;
+}
+
+function renderHotels(){
+  const extra = loadJSON('rim_admin_hotels', []);
+  const all = DEFAULT_HOTELS.concat(extra);
+  const rows = all.map((h,i)=>`
+    <tr>
+      <td><b>${escapeHtml(h.name)}</b>${h.builtin?' <span class="badge">Default</span>':''}</td>
+      <td>${escapeHtml(h.tier)}</td>
+      <td>${escapeHtml(h.area)}</td>
+      <td>+91 ${escapeHtml(String(h.phone).replace(/\D/g,''))}</td>
+      <td>${h.builtin ? '<span class="note">Built-in</span>' : `<button class="del-btn" data-del-hotel="${i - DEFAULT_HOTELS.length}">Remove</button>`}</td>
+    </tr>`).join('');
+  $('hotelsTable').innerHTML = `
+    <thead><tr><th>Name</th><th>Tier</th><th>Area</th><th>Phone</th><th></th></tr></thead>
+    <tbody>${rows}</tbody>`;
+  $('hotelsTable').querySelectorAll('[data-del-hotel]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const idx = parseInt(b.dataset.delHotel,10);
+      const list = loadJSON('rim_admin_hotels', []);
+      list.splice(idx,1);
+      saveJSON('rim_admin_hotels', list);
+      renderHotels(); renderStats();
+    });
+  });
+}
+
+$('hAddBtn').addEventListener('click', ()=>{
+  const name = $('hName').value.trim().slice(0,60);
+  const tier = ($('hTier').value.trim() || 'Standard').slice(0,20);
+  const area = $('hArea').value.trim().slice(0,80);
+  const phone = $('hPhone').value.trim().replace(/\D/g,'');
+  const note = $('hNote').value.trim().slice(0,160);
+  if(!name || !area || phone.length!==10){ alert('Please fill in name, area, and a 10-digit phone number.'); return; }
+  const list = loadJSON('rim_admin_hotels', []);
+  list.push({name, tier, area, phone, note, builtin:false});
+  saveJSON('rim_admin_hotels', list);
+  ['hName','hTier','hArea','hPhone','hNote'].forEach(id=>$(id).value='');
+  renderHotels(); renderStats();
+});
+
+function renderReviews(){
+  const reviews = loadJSON('rim_reviews', []);
+  if(reviews.length===0){
+    $('reviewsTable').innerHTML = '<tbody><tr><td class=\"empty\">No traveller notes yet.</td></tr></tbody>';
+    return;
+  }
+  const rows = reviews.map((r,i)=>{
+    const stars = Math.max(0, Math.min(5, Math.round(Number(r.rating)||0)));
+    return `
+    <tr>
+      <td><b>${escapeHtml(r.name)}</b></td>
+      <td>${escapeHtml(r.place)}</td>
+      <td class="stars-sm">${'★'.repeat(stars)}${'☆'.repeat(5-stars)}</td>
+      <td>${escapeHtml(r.text)}</td>
+      <td><button class="del-btn" data-del-review="${i}">Remove</button></td>
+    </tr>`;
+  }).join('');
+  $('reviewsTable').innerHTML = `
+    <thead><tr><th>Name</th><th>Place</th><th>Rating</th><th>Note</th><th></th></tr></thead>
+    <tbody>${rows}</tbody>`;
+  $('reviewsTable').querySelectorAll('[data-del-review]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const idx = parseInt(b.dataset.delReview,10);
+      const list = loadJSON('rim_reviews', []);
+      list.splice(idx,1);
+      saveJSON('rim_reviews', list);
+      renderReviews(); renderStats();
+    });
+  });
+}
+
+function renderUsers(){
+  const users = loadJSON('rim_users', {});
+  const names = Object.keys(users);
+  if(names.length===0){
+    $('usersTable').innerHTML = '<tbody><tr><td class=\"empty\">No demo accounts registered in this browser yet.</td></tr></tbody>';
+    return;
+  }
+  const rows = names.map(n=>`<tr><td><b>${escapeHtml(n)}</b></td><td class="note">Verified by email code</td></tr>`).join('');
+  $('usersTable').innerHTML = `<thead><tr><th>Username</th><th></th></tr></thead><tbody>${rows}</tbody>`;
+}
+
+})();
+</script>
+</body>
+</html>
