@@ -1,174 +1,166 @@
-# Re-Imagining Manipur — Imphal Travel Guide
+# Re-Imagining Manipur
 
-A working prototype travel guide built for the **Re-Imagining Manipur Hackathon 2026** (World Tourism Day, organised by the Dept. of Information Technology and Dept. of Tourism, Govt. of Manipur, with ManipurTech Innovation Foundation as knowledge partner).
+**A Digital Tourism Platform for Discovering Manipur, India.**
 
-**Live demo:** add your GitHub Pages URL here once deployed.
+Re-Imagining Manipur is an interactive, responsive tourism web application developed for the **Re-Imagining Manipur Hackathon 2026**, organised by the Department of Information Technology and Department of Tourism, Government of Manipur, with ManipurTech Innovation Foundation as knowledge partner.
 
----
-
-## Deploy in 2 minutes
-
-**Easiest (no GitHub, no install):** use `manipur-site-upload.zip` from the download. It already contains only the site files.
-1. Unzip it.
-2. Go to **app.netlify.com/drop** and drag the unzipped folder onto the page.
-3. Sign in when asked (free) so the site is kept, then open the link Netlify gives you.
-
-Cloudflare Pages ("Direct Upload") and any static host work the same way: upload the folder contents. Because that build has no site address baked in, it leaves out the canonical link, share image and sitemap. To include them, run `npm install && npm run build -- https://your-site-address` and upload the new `dist/` folder.
-
-**GitHub Pages (updates on every push):** see [Deploying to GitHub Pages](#deploying-to-github-pages). The workflow tests, builds with your real address, and publishes.
-
-## Quick start
-
-**Run it locally — no install, no build step:**
-```bash
-git clone https://github.com/<your-username>/re-imagining-manipur.git
-cd re-imagining-manipur
-python3 -m http.server 8000
-# open http://localhost:8000
-```
-Or just double-click `index.html` to open it directly in a browser (the service worker and calendar export need a real server or `https://` to fully work — see [Local development](#local-development)).
-
-**Deploy it for free on GitHub Pages:** see [Deploying to GitHub Pages](#deploying-to-github-pages) below — five steps, auto-deploys on every push via the included GitHub Actions workflow.
-
----
+The platform brings together destination discovery, cultural information, travel planning and accommodation details to make exploring Manipur easier and more accessible.
 
 ## Features
 
-**Guide (`index.html`)**
-- 14 curated places around Imphal — searchable, filterable by category, each with an original bespoke illustration (no stock photography, so zero copyright exposure)
-- Trip planner: pick days + interests, get a generated day-by-day schedule, a budget estimate, and one-click curated circuits
-- **Add to calendar** (`.ics` download) and **Print / Save as PDF** for the generated itinerary
-- **Packing checklist** with progress saved on-device
-- **Emergency & safety contacts** — India-wide helplines plus the regional tourism office
-- Verified hotel directory — five real Imphal properties, tap-to-call booking
-- Getting around: real airport transport costs and a distance/travel-time table
-- History timeline, culture & cuisine notes, an FAQ covering Inner Line Permit requirements
-- Festival-dates notice ticker with sourced 2026 dates
-- Traveller reviews — seeded examples plus a working submission form
-- WhatsApp share for your saved trip list, and a self-referencing QR code in the footer
-- Accessibility toolbar — text scaling + high-contrast mode
-- Sign in / Register, tied into the review form
-- **Installable (PWA)** — add to home screen, works offline for previously visited pages
-- Light/dark theme toggle, scroll-spy navigation, mobile menu
+- **Destination Discovery:** Explore 14 curated destinations around Imphal with search and category filters.
+- **Trip Planner:** Generate day-wise itineraries based on travel duration and interests, with estimated budgets.
+- **Travel Information:** Access accommodation details, transportation information and emergency contacts.
+- **Culture & Heritage:** Discover local history, festivals, cuisine and cultural attractions.
+- **Traveller Tools:** Packing checklist, calendar export, printable itineraries and WhatsApp sharing.
+- **Progressive Web App:** Installable experience with offline access to previously visited pages.
+- **Administration Dashboard:** Interfaces for managing accommodation listings and moderating traveller reviews.
+- **Responsive Design:** Mobile-friendly interface with light and dark themes and accessibility options.
 
-**Admin panel (`admin.html`)**
-- Passcode-gated dashboard for managing hotel listings and moderating reviews
-- Live stats: hotels listed, traveller notes, registered accounts, current trip size
+## Technology Stack
 
-## ⚠️ What's real and what's a demo
+| Technology | Purpose |
+|---|---|
+| HTML5 | Application structure |
+| CSS3 | Styling and responsive design |
+| JavaScript | Interactive functionality |
+| Node.js | Build scripts and testing |
+| npm | Dependency management |
+| jsdom | Application testing |
 
-This is a **static, front-end-only site** — no server, no database.
+## Getting Started
 
-- **Sign in** uses an emailed 6-digit code (see *Email verification* below). With no email service connected it runs in **demo mode**: the code is generated in the browser and shown on screen, which proves nothing about the email address and is **not secure**.
-- **`admin.html`** is gated by a passcode visible in the page's own source (`manipur2026`) — it demonstrates an admin workflow, not real access control.
-- All data (accounts, reviews, saved trips, admin-added hotels, packing checklist) lives **only in one browser, on one device**. `index.html` and `admin.html` only share data when deployed to the **same origin**.
-- User-submitted content is HTML-escaped before rendering, closing the stored-XSS path between a public review and the admin panel that reads it.
-- The **calendar export** schedules your trip starting next Monday as a placeholder — there's no date picker, so adjust the dates after importing into your calendar app.
-- The **service worker** only activates once deployed with `sw.js` reachable at the same path (e.g. on GitHub Pages) — it's a no-op anywhere `sw.js` isn't served, including most live-preview sandboxes.
+### Prerequisites
 
-**To make any of this real**, wire the same UI to a backend — Supabase, Firebase, or a small custom API are the fastest paths. Say this plainly in a hackathon pitch — judges tend to reward the honest version over a prototype dressed up as finished infrastructure.
+- Node.js 20 or later
+- npm
+- Git
 
-## Deploying to GitHub Pages
+### Installation
 
-This repo ships a GitHub Actions workflow (`.github/workflows/deploy.yml`) that deploys automatically on every push to `main`.
-
-1. **Create a new repository** on GitHub (e.g. `re-imagining-manipur`).
-2. **Push this folder** to it:
-   ```bash
-   git init
-   git add .
-   git commit -m "Initial commit — Re-Imagining Manipur hackathon prototype"
-   git branch -M main
-   git remote add origin https://github.com/<your-username>/re-imagining-manipur.git
-   git push -u origin main
-   ```
-3. In the repo, go to **Settings → Pages**, and under **Build and deployment → Source**, choose **GitHub Actions**.
-4. The push already triggered the workflow — check the **Actions** tab. Your site publishes at `https://<your-username>.github.io/re-imagining-manipur/` within a minute or two.
-5. **Nothing to edit for the URL** — the workflow swaps the placeholder link in `index.html`, `robots.txt` and `sitemap.xml` for your real GitHub Pages address on every deploy. (On Netlify or another host, replace `your-username.github.io/re-imagining-manipur` in those three files yourself.)
-6. Visit `/admin.html` on your published site to confirm it shares `localStorage` with `index.html` — add a hotel there, then check it appears on the main page in the same browser.
-
-**Prefer the simpler branch-deploy method?** Delete `.github/workflows/deploy.yml`, then in Settings → Pages set Source to "Deploy from a branch", branch `main`, folder `/ (root)`.
-
-**Using a custom domain instead of `github.io`?** Add a `CNAME` file containing just your domain, point your DNS at GitHub's Pages IPs, then set it under Settings → Pages → Custom domain.
-
-## Local development
-
-No build step. Two ways to run it:
+**1. Clone the repository**
 
 ```bash
-# Option A — Python (built into most systems)
+git clone https://github.com/alokxyadav/Re-Imagining-Manipur.git
+```
+
+**2. Navigate to the project**
+
+```bash
+cd Re-Imagining-Manipur
+```
+
+**3. Install dependencies**
+
+```bash
+npm install
+```
+
+**4. Start the local server**
+
+```bash
 python3 -m http.server 8000
-
-# Option B — Node, if you have it
-npx serve .
-```
-Then visit `http://localhost:8000`.
-
-**Why not just double-click `index.html`?** Two features need a real server (or `https://`) to work: the Web Crypto password hashing and the service worker both require a "secure context" (`https://` or `localhost`), which a bare `file://` URL isn't. Everything else works fine opened directly — password hashing falls back to a clearly-marked insecure mode, and the service worker registration just silently no-ops.
-
-## File structure
-
-```
-.
-├── .github/workflows/deploy.yml   # auto-deploy to GitHub Pages on push
-├── index.html                     # the public-facing guide
-├── admin.html                     # companion admin panel
-├── manifest.json                  # PWA manifest (installable, app icon, theme color)
-├── sw.js                          # service worker — offline app-shell caching
-├── icon.svg                       # app icon, referenced by manifest.json and favicons
-├── 404.html                       # custom not-found page matching the site's design
-├── robots.txt                     # SEO
-├── scripts/build.js               # builds dist/: 14 static place pages, sitemap, real URLs
-├── LICENSE                        # MIT — update the copyright holder name
-├── CHANGELOG.md                   # build history
-└── README.md                      # this file
 ```
 
-### A note on the app icon
+**5. Open in your browser**
 
-`icon.svg` is used as-is in the manifest and works in essentially all modern browsers (Chrome, Edge, Firefox, and recent Safari all support SVG manifest icons). If you need PNG fallbacks for older Android/iOS home-screen rendering, export `icon.svg` at 192×192 and 512×512 using any vector tool (Inkscape, Figma, or `npx svgexport icon.svg icon-512.png 512:512`) and add matching entries to `manifest.json`.
+```text
+http://localhost:8000
+```
 
-## Email verification (free OTP)
+## Testing & Build
 
-Sign-in and account creation both require a 6-digit code sent to the user's email. A static page cannot send or check codes securely on its own, so live mode uses **Supabase Auth** (free tier), where the server emails and verifies the code.
+Run the automated tests:
 
-1. Create a free project at supabase.com.
-2. **Authentication → Providers**: make sure *Email* is enabled.
-3. **Authentication → Email Templates**: edit the *Magic Link* and *Confirm signup* templates so the body contains `{{ .Token }}` (this puts the 6-digit code in the email).
-4. **Authentication → SMTP Settings**: Supabase's built-in sender is only for testing and is heavily limited. For real users, connect a free SMTP provider (for example Brevo or Resend).
-5. **Project Settings → API**: copy the *Project URL* and the *anon public* key into `AUTH_CONFIG` at the top of the auth section in `index.html`. Never put the `service_role` key in the page.
-6. Set `allowDemo: false` in `AUTH_CONFIG` so the on-screen demo code can never appear on your live site.
-7. Redeploy. The "Demo mode" notice disappears and codes are emailed.
+```bash
+npm test
+```
 
-Limits to be aware of: the demo-mode code check runs in the browser and can be bypassed; the rest of the app (reviews, trips, admin) still stores data per browser, so a verified email does not yet sync across devices.
+Generate production files:
 
-## Search (SEO)
+```bash
+npm run build
+```
 
-What is built in: an indexable home page with a concise title and description, one **static page per place** (own title, description, schema.org `TouristAttraction` data, breadcrumbs, links to the other places), a generated `sitemap.xml`, canonical links, and a share image. These give search engines real, separate pages to rank for searches like each place's name.
+To generate production files with a deployment URL:
 
-Nobody can promise a first-place ranking. After you deploy: (1) add the site to **Google Search Console** and **Bing Webmaster Tools** and submit `/sitemap.xml`; (2) add your own photos with descriptive `alt` text; (3) get links from local sites such as tourism pages, hotels and community groups; (4) keep the facts current. Ranking takes weeks and depends on competition.
+```bash
+npm run build -- https://your-domain.com
+```
 
-## Tests & CI
+## Project Structure
 
-`npm install && npm test` runs `tests/smoke.js`: it loads the guide and admin page in a simulated browser and checks rendering, the trip counter, search, email-code sign-in, the `allowDemo` switch, and that hostile saved data is shown as plain text. The deploy workflow runs these first and **stops the deploy if any check fails**, then publishes only the site files (not `tests/` or `node_modules/`). Using Netlify Drop? Drag the folder in before running `npm install`, or drag just the site files.
+```text
+Re-Imagining-Manipur/
+├── index.html          # Main tourism application
+├── admin.html          # Administration dashboard
+├── places/             # Destination pages
+├── scripts/            # Build scripts
+├── tests/              # Automated tests
+├── workflows/          # Workflow files
+├── manifest.json       # PWA configuration
+├── sw.js               # Service worker
+├── icon.svg            # Application icon
+├── privacy.html        # Privacy policy
+├── terms.html          # Terms and conditions
+├── robots.txt          # Search engine instructions
+├── package.json        # Project configuration
+├── CHANGELOG.md        # Change history
+├── LICENSE             # MIT License
+└── README.md
+```
 
-## Before you launch
+## Deployment
 
-Replace `[contact email]` in `privacy.html` and `terms.html` with a real address. These pages describe what the prototype actually does; have them reviewed if you collect real user data.
+The application can be deployed on static hosting platforms such as:
 
-## Production notes
+- GitHub Pages
+- Netlify
+- Cloudflare Pages
 
-- `_headers` sets security headers (CSP incl. `frame-ancestors`, nosniff, referrer and permissions policies) on Netlify. GitHub Pages cannot send custom headers, so the page's CSP meta tag is the fallback there.
-- `.nojekyll` stops GitHub from processing files with Jekyll if you use branch-deploy.
-- The deploy workflow validates `manifest.json` and fails the build if any placeholder URL is left.
-- `og-image.png` is the social-preview image used by `og:image`; replace it with your own artwork any time (keep 1200×630).
+For GitHub Pages, configure the repository's Pages settings and deployment workflow according to your hosting configuration.
 
-## Credits & sources
+## Project Limitations
 
-- Hotel names, room counts and phone numbers: Imphal East district administration's public accommodation directory.
-- Airport transport costs and Inner Line Permit process: Imphal Airport authority and the Manipur ILP portal.
-- Festival dates: publicly published 2026 Manipur government holiday calendars.
-- Emergency numbers: standard all-India helplines (police 100, ambulance 108, fire 101, women's helpline 1091) and the Incredible India tourist infoline.
-- Design patterns referenced from the public tourism sites of Manipur, Nagaland, Delhi, Bihar, and Kerala (India's top-ranked state tourism site) — accessibility toolbar, distance charts, notice tickers, destination filtering, hotel/homestay directories.
+This project is currently a frontend-focused hackathon prototype.
 
-This is an **independent hackathon prototype**, not an official government publication. Verify opening hours, fees, and permit rules directly with official sources before travelling.
+- Authentication requires a properly configured authentication provider for real email verification.
+- Demo OTP authentication is not secure.
+- Application data is stored locally in the browser.
+- The administration dashboard does not provide production-grade access control.
+- A production deployment requires a secure backend, database and server-side authorization.
+
+## Future Scope
+
+- AI-powered travel recommendations.
+- Interactive maps and navigation.
+- Multilingual support.
+- Centralized database and backend integration.
+- Secure authentication and administration.
+- Real-time tourism and accommodation services.
+
+## Contributing
+
+Contributions and suggestions are welcome.
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Make your changes.
+4. Run the available tests.
+5. Submit a pull request with a description of your changes.
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+
+## Acknowledgements
+
+Developed in connection with the Re-Imagining Manipur Hackathon 2026.
+
+We acknowledge the Department of Information Technology, Government of Manipur, Department of Tourism, Government of Manipur, and ManipurTech Innovation Foundation.
+
+**Disclaimer:** This is an independent hackathon prototype and is not an official Government of Manipur website or publication.
+
+---
+
+**Repository:** [alokxyadav/Re-Imagining-Manipur](https://github.com/alokxyadav/Re-Imagining-Manipur)
